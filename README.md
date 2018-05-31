@@ -15,3 +15,8 @@
   </p>
   The purpose of this macro is to provide sample images for their analysis using <b>RandomPatternAnalysis.ijm</b>. Both macros are used to teach macro scripting.
 </p>
+<br>
+<b>TripleColocalizationAnalysis.ijm</b>
+<p>
+  This macro analyses the staining of two proteins and a cellular organelle. The aim is to see how one of these two proteins colocalize with both the organelle and the other protein.
+  </p>
