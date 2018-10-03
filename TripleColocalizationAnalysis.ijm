@@ -5,8 +5,10 @@
  * 				(2)Advanced Optical Microscopy Unit.  	
  * 				   Scientific and Technological Centers. Universitat de Barcelona
  * Version: 1	Date: 01.02.2017
- * Input: 3 channel image (composite): red, blue, green
- * Output: log file with Colocalization coefficients
+ * Input: 	3 channel image (composite)
+ * Output: 	Results table with intensity measurements
+ *			Log file with Colocalization coefficients
+ *			Resulting images of each main step
  */ 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,9 +21,9 @@ if(!is("composite") || channels != 3){
 	exit("The file is not a three-channel composite image");
 }
 title = getTitle();
+experiment = File.nameWithoutExtension();
 input = File.directory();
-//Change names accordingly in the following array
-arrayNames = newArray("membrane", "KCNE", "channel");
+arrayNames = newArray("membrane", "KCNE", "Kv1.3");//Change each name accordingly
 
 //CREATE AN OUTPUT DIRECTORY FOR THE RESULTS
 output = input + "Results" + File.separator;
@@ -69,11 +71,11 @@ selectWindow("C1-"+title);
 run("Duplicate...", "title=" + arrayNames[0]);
 autoAdjust();
 segment();
-arg = getBoolean("Are there any intracellular particles?");
+arg = getBoolean("Are there any intracellular vesicles?");
 if (arg==1) {
 	setBackgroundColor(255, 255, 255);
 	setTool("polygon");
-	waitForUser("Add ROI to clear out intracellular particles");
+	waitForUser("Add ROI to clear out intracellular vesicles");
 	run("Clear", "slice");
 }
 run("Select None");
@@ -96,7 +98,7 @@ saveIntermediate(arrayNames[1], "mask");
 selectWindow(arrayNames[2]);
 saveIntermediate(arrayNames[2], "mask");
 
-//OBTAIN & SAVE ORIGINAL INTENSITY INSIDE MASK
+//OBTAIN & SAVE THE IMAGES WITH THE ORIGINAL INTENSITY INSIDE MASK
 imageCalculator("Min create", "C1-"+title, arrayNames[0]);
 rename(arrayNames[0] + " int");
 saveIntermediate(arrayNames[0], "intensityInsideMask");
@@ -107,18 +109,19 @@ imageCalculator("Min create", "C3-"+title, arrayNames[2]);
 rename(arrayNames[2] + " int");
 saveIntermediate(arrayNames[2], "intensityInsideMask");
 
-//CALCULATE MEMBRANE/RETENTION RATIO
+//MEASURE Kv1.3 INTENSITY
 run("Set Measurements...", "mean display redirect=None decimal=3");
-selectWindow(arrayNames[2] + " int");
-run("Measure");
 imageCalculator("AND create", arrayNames[2], arrayNames[1]);
 result1 = getTitle();
 imageCalculator("AND create", result1, arrayNames[0]);
-result2 = getTitle();
-imageCalculator("Min create", "C3-"+title, result2);
+saveIntermediate(arrayNames[2], "TripleMask");
+rename("TripleMask");
+imageCalculator("Min create", "C3-"+title, "TripleMask");
 rename("intensityInsideTripleMask");
 run("Measure");
 saveIntermediate(arrayNames[2], "intensityInsideTripleMask");
+selectWindow(arrayNames[2] + " int");
+run("Measure");
 
 //CLOSE UNNECESSARY WINDOWS
 clean("C1-"+title);
@@ -128,8 +131,8 @@ clean(arrayNames[1]);
 clean("C3-"+title);
 clean(arrayNames[2]);
 clean(result1);
-clean(result2);
-clean("ROI Manager");
+clean("TripleMask");
+//clean("ROI Manager");
 
 //CALCULATE COLOCALIZATION
 run("JACoP ", "imga=[" + arrayNames[0] + " int" +"] imgb=[" + arrayNames[1] + " int" +"] thra=1 thrb=1 pearson mm");
@@ -138,9 +141,9 @@ run("JACoP ", "imga=[" + arrayNames[1] + " int" +"] imgb=[" + arrayNames[2] + " 
 
 //SAVE RESULTS
 selectWindow("Log");
-saveAs("Text", output + "ColocalizationLog.txt");
+saveAs("Text", output + experiment + " ColocalizationLog.txt");
 selectWindow("Results");
-saveAs("Results", output + "Results.csv");
+saveAs("Results", output + experiment + arrayNames[2] + " IntensityResults.csv");
 
 //FUNCTIONS
 //Function to process each channel image
@@ -162,7 +165,7 @@ function selectSingleCell(){
 //Function to save intermediate files
 function saveIntermediate(protein, step){
 	run("Duplicate...", "title=duplicate");
-	saveAs("Tiff", output + protein + " " + step);
+	saveAs("Tiff", output + experiment + " " + protein + " " + step);
 	close();
 }
 //Function to adjust Brightness & Contrast automatically
