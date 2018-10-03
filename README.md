@@ -30,6 +30,6 @@
     <br>
     <i>Ratio image and histogram that result from the analysis of an active (above) and inactive (below) RacFRET biosensor using the FRETRatioAnalysis.ijm macro.
     <br>
-      Image source: Kardash, E., Reichman-Fried, M., Maître, J.-L., Boldajipour, B., Papusheva, E., Messerschmidt, E.-M., et al. (2010). A role for Rho GTPases and cell-cell adhesion in single-cell motility in vivo. Nature Cell Biology, 12(1), 47–53; sup pp 1–11. http://doi.org/10.1038/ncb2003</i>
+      Image source: Kardash, E., Bandemer, J., & Raz, E. (2011). Imaging protein activity in live embryos using fluorescence resonance energy transfer biosensors. Nature Protocols, 6(12), 1835–1846. http://doi.org/10.1038/nprot.2011.395</i>
   </p>
 </p>
