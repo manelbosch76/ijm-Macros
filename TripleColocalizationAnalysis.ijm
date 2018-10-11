@@ -110,7 +110,7 @@ rename(arrayNames[2] + " int");
 saveIntermediate(arrayNames[2], "intensityInsideMask");
 
 //MEASURE Kv1.3 INTENSITY
-run("Set Measurements...", "mean display redirect=None decimal=3");
+run("Set Measurements...", "integrated display redirect=None decimal=3");
 imageCalculator("AND create", arrayNames[2], arrayNames[1]);
 result1 = getTitle();
 imageCalculator("AND create", result1, arrayNames[0]);
@@ -118,6 +118,7 @@ saveIntermediate(arrayNames[2], "TripleMask");
 rename("TripleMask");
 imageCalculator("Min create", "C3-"+title, "TripleMask");
 rename("intensityInsideTripleMask");
+//run("Clear Results");
 run("Measure");
 saveIntermediate(arrayNames[2], "intensityInsideTripleMask");
 selectWindow(arrayNames[2] + " int");
