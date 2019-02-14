@@ -1,9 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////
 /* Name: FRETRatioAnalysis	
- * Author: Manel Bosch
- * Afiliation:  Advanced Optical Microscopy Unit  
- * 				Scientific and Technological Centers 
- *				University of Barcelona (CCiTUB)	
+ * Author: Manel Bosch (1,2) & Elena Kardash (3)
+ * Afiliation: 	(1)Biochemistry and Molecular Biomedicine department. Universitat de Barcelona
+ * 				(2)Advanced Optical Microscopy Unit.  	
+ * 				   Scientific and Technological Centers. Universitat de Barcelona
+ *				(3)BioEmergences Laboratory (USR 3695), CNRS, Université Paris-Saclay, 91190, Gif-sur-Yvette
  * Version: 3 	Date: 25.05.2018
  * 	
  * Description: measures the ratio between FRET and CFP images 
@@ -37,6 +38,7 @@ input = File.directory;
 experiment = substring(title, 0, lengthOf(title)-8);//Removing FRET and file extension
 cellType = substring(title, lengthOf(title)-8, lengthOf(title)-4);//Looking for FRET word
 extension = substring(title, lengthOf(title)-4);//Looking for file extension
+getDimensions(width, height, channels, slices, frames);
 if(cellType=="FRET"){
 	open(experiment + "CFP" + extension);//Pair of FRET image previously open
 	cfpID = getImageID();
@@ -89,13 +91,18 @@ selectImage(ratioID);
 run("Lookup Tables", "resource=Lookup_Tables/ lut=[Blue Green Red]");
 run("Duplicate...", "title=copy duplicate");
 resizeImage();
-run("Calibration Bar...", "location=[Upper Right] fill=Black label=White number=3 decimal=1 font=14 zoom=1.5");
+run("Calibration Bar...", "location=[Upper Right] fill=Black label=White number=3 decimal=1 font=14 zoom=1.5 overlay");
+run("Flatten", "stack");
 calBarID = getImageID();
 
 //Obtain histogram
 selectImage(ratioID);
 rename("Ratio");
-run("Histogram", "bins=100 x_min=" + minRatio + " x_max=" + maxRatio + " y_max=Auto stack");
+if(slices>1){
+	stackHistogram();
+}else{
+	run("Histogram", "bins=100 x_min=" + minRatio + " x_max=" + maxRatio + " y_max=Auto");
+}
 
 //Create Results folder inside the input folder
 output = input + "Results" + File.separator;
@@ -111,16 +118,34 @@ selectImage(ratioID);
 saveAs("Tiff", output + experiment + " Ratio");
 selectWindow("Histogram of Ratio");
 saveAs("Tiff", output + experiment + " Ratio_Histogram");
-selectWindow("copy");
-close();
+if(isOpen("copy")){
+	selectWindow("copy");
+	close();
+}
 
-//Functions
+/**********
+* Functions
+**********/
+//Function to resize an image and increase its canvas by 100px width
 function resizeImage(){
-	getDimensions(width, height, channels, slices, frames);
 	if(width<400){
 		run("Size...", "width=400 height=400 constrain average interpolation=None");
-		getDimensions(width, height, channels, slices, frames);
+		height = getHeight();
 	}
-	width = width + 100;
+	width = getWidth() + 100;
 	run("Canvas Size...", "width="+width+" height="+height+" position=Center-Left zero");
+}
+
+//Function to create a stack of histograms obtained from each slice in a stack
+function stackHistogram(){
+	setBatchMode(true);
+	for(i=1; i<=slices; i++){
+		selectImage(ratioID);
+		setSlice(i);
+		run("Histogram", "bins=100 x_min=" + minRatio + " x_max=" + maxRatio + " y_max=Auto");
+		rename("frame " + i);
+	}
+	run("Images to Stack", "name=histoStack title=frame use");
+	rename("Histogram of Ratio");
+	setBatchMode(false);
 }

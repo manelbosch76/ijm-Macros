@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 /* Name: RandomPatternAnalysis
- * Author: Manel Bosch
- * Affiliation:	Advanced Optical Microscopy Unit  
- * 				Scientific and Technological Centers 
- *				University of Barcelona (CCiTUB)
+ * Author: Manel Bosch (1,2)
+ * Affiliation:	(1)Biochemistry and Molecular Biomedicine department. Universitat de Barcelona
+ * 				(2)Advanced Optical Microscopy Unit.  	
+ * 				   Scientific and Technological Centers. Universitat de Barcelona
  * Version: 1	Date: 16th March 2018
  *
  * Description: Counts blue dots and checks for green signal inside red circles

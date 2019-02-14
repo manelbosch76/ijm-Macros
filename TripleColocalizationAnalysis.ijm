@@ -101,13 +101,13 @@ saveIntermediate(arrayNames[2], "mask");
 //OBTAIN & SAVE THE IMAGES WITH THE ORIGINAL INTENSITY INSIDE MASK
 imageCalculator("Min create", "C1-"+title, arrayNames[0]);
 rename(arrayNames[0] + " int");
-saveIntermediate(arrayNames[0], "intensityInsideMask");
+saveIntermediate(arrayNames[0], "intensityInsideSingleMask");
 imageCalculator("Min create", "C2-"+title, arrayNames[1]);
 rename(arrayNames[1] + " int");
-saveIntermediate(arrayNames[1], "intensityInsideMask");
+saveIntermediate(arrayNames[1], "intensityInsideSingleMask");
 imageCalculator("Min create", "C3-"+title, arrayNames[2]);
 rename(arrayNames[2] + " int");
-saveIntermediate(arrayNames[2], "intensityInsideMask");
+saveIntermediate(arrayNames[2], "intensityInsideSingleMask");
 
 //MEASURE Kv1.3 INTENSITY
 run("Set Measurements...", "integrated display redirect=None decimal=3");
