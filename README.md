@@ -20,6 +20,11 @@
 <b>TripleColocalizationAnalysis.ijm</b>
 <p>
   This macro analyses the staining of two proteins and a cellular organelle. The aim is to see how one of these two proteins colocalize with both the organelle and the other protein.
+  <p align="center">
+    <img src="https://github.com/manelbosch76/ijm-Macros/blob/master/Images/Triple%20colocalization.png"/>
+    <br>
+    <i>Membrane / Intracelular ratio of protein localization</i>
+  </p>
 </p>
 <br>
 <b>FRETRatioAnalysis.ijm</b>
