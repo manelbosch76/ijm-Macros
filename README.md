@@ -17,6 +17,7 @@
   The purpose of this macro is to provide sample images for their analysis using <b>RandomPatternAnalysis.ijm</b>. Both macros are used to teach macro scripting.
   <br>
   <br>
+  
   **Citation:** Bosch, M., 2019. *Introduction to ImageJ Macro Language in a Particle Counting Analysis: Automation Matters*. Computer Optimized Microscopy: Methods and Protocols (Methods in Molecular Biology)
 </p>
 <br>
@@ -47,5 +48,5 @@
   **Image source:** Kardash, E., et al. 2011. *Imaging protein activity in live embryos using fluorescence resonance energy transfer biosensors*. Nature Protocols.
  <br>
     
-   **Citation:** Bosch, M. and Kardash, E. 2019. *In vivo quantification of intramolecular FRET using RacFRET*. Computer Optimized Microscopy: Methods and Protocols (Methods in Molecular Biology)
+  **Citation:** Bosch, M. and Kardash, E. 2019. *In vivo quantification of intramolecular FRET using RacFRET*. Computer Optimized Microscopy: Methods and Protocols (Methods in Molecular Biology)
 </p>
